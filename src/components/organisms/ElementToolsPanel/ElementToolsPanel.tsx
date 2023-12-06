@@ -10,15 +10,10 @@ import {
 
 import classes from './ElementToolsPanel.module.scss';
 
-const ElementToolsPanel: React.FC = ({ layout, handleDragStart }) => {
+const ElementToolsPanel: React.FC = ({ layout }) => {
   return (
     <div className={classes['tools-panel']}>
-      <IconButton
-        aria-label="Move Item"
-        color="primary"
-        className="Move Item"
-        onMouseDown={handleDragStart}
-      >
+      <IconButton aria-label="Move Item" color="primary" className="drag-area">
         <OpenWith />
       </IconButton>
       <IconButton
