@@ -3,6 +3,7 @@ import ResponsiveGridLayout from 'react-grid-layout';
 
 import { addElement } from '@/store/landingBuilder/layoutSlice';
 import { useAppDispatch, useAppSellector } from '@hooks/cvTemplateHooks';
+import ComponentPreloader from '@components/atoms/ComponentPreloader';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -13,7 +14,7 @@ const DynamicComponentRenderer = ({ Component, props, children, layout }) => {
   const DynamicComponent = lazy(() => import(`@atoms/${Component}/index.ts`));
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<ComponentPreloader />}>
       <DynamicComponent key={Component} props={props} children={children} layout={layout} />
     </Suspense>
   );
@@ -28,7 +29,6 @@ const ContainerDIV: React.FC = ({ children, layout, onLayoutChange }) => {
   useEffect(() => {
     const containerWidth = containerRef.current.getBoundingClientRect().width;
     setWidth(containerWidth);
-    console.log(width);
   }, []);
 
   const onDrop = (layout, layoutItem, _event) => {
