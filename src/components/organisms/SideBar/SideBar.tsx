@@ -4,6 +4,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 
+import { importFiles } from '@/utils';
 import TabPanel from '@molecules/TabPanel';
 import NestedList from '@molecules/NestedList';
 
@@ -13,39 +14,15 @@ const SideBar: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [isActiveTab, setSctiveTab] = useState(false);
   const [isPromiseResolve, setPromiseResolved] = useState(false);
-  const [sidebarMenuList, setSidebarMenuList] = useState({
-    Sections: [],
-    Elements: [],
-    Templates: [],
-  });
+  const [sidebarMenuList, setSidebarMenuList] = useState({});
   const tabsIcons = [<DashboardIcon />, <ExtensionIcon />, <ViewCarouselIcon />];
 
   useEffect(() => {
-    const importFiles = async () => {
-      const moduleFiles = import.meta.glob('@atoms/**/index.ts');
-
-      let elements = [];
-
-      for await (const file of Object.values(moduleFiles)) {
-        const module = await file();
-        const { props } = module;
-        if (props) {
-          const isExist = elements.find((element) => element.name === props.type);
-          if (isExist) {
-            isExist.list.push(props);
-          } else {
-            elements.push({ name: props.type, list: [props] });
-          }
-        }
-      }
-
-      return elements;
-    };
-
     importFiles().then((data) => {
-      setSidebarMenuList({ ...sidebarMenuList, Elements: data });
-      setPromiseResolved(true);
+      setSidebarMenuList({ ...sidebarMenuList, ...data });
     });
+
+    setPromiseResolved(true);
   }, []);
 
   const handleChangeTab = (_event: React.SyntheticEvent, indxBtn: number) => {

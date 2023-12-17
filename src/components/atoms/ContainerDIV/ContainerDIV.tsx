@@ -10,17 +10,33 @@ import 'react-resizable/css/styles.css';
 import classes from './ContainerDIV.module.scss';
 
 // Отрисовываем динамический компонент
-const DynamicComponentRenderer = ({ Component, props, children, layout }) => {
-  const DynamicComponent = lazy(() => import(`@atoms/${Component}/index.ts`));
+const DynamicComponentRenderer = ({ Component, props, source, children, layout }) => {
+  let DynamicComponent = () => <></>;
+
+  if (source === 'organisms') {
+    DynamicComponent = lazy(() => import(`@organisms/${Component}/index.ts`));
+  }
+  if (source === 'molecules') {
+    DynamicComponent = lazy(() => import(`@molecules/${Component}/index.ts`));
+  }
+  if (source === 'atoms') {
+    DynamicComponent = lazy(() => import(`@atoms/${Component}/index.ts`));
+  }
 
   return (
     <Suspense fallback={<ComponentPreloader />}>
-      <DynamicComponent key={Component} props={props} children={children} layout={layout} />
+      <DynamicComponent
+        key={Component}
+        props={props}
+        source={source}
+        children={children}
+        layout={layout}
+      />
     </Suspense>
   );
 };
 
-const ContainerDIV: React.FC = ({ children, layout, onLayoutChange }) => {
+const ContainerDIV: React.FC = ({ children, layout }) => {
   const dispatch = useAppDispatch();
   const containerRef = useRef(null);
   const [width, setWidth] = useState(0);
@@ -52,7 +68,6 @@ const ContainerDIV: React.FC = ({ children, layout, onLayoutChange }) => {
         isDraggable
         isDroppable
         onDrop={onDrop}
-        onLayoutChange={(temp) => onLayoutChange(layout.i, temp)}
       >
         {children.map((el, indx) => {
           return (
@@ -60,6 +75,7 @@ const ContainerDIV: React.FC = ({ children, layout, onLayoutChange }) => {
               <DynamicComponentRenderer
                 Component={el.name}
                 props={el.props}
+                source={el.source}
                 children={el.children}
                 layout={el.layout}
               />

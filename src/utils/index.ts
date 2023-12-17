@@ -22,3 +22,36 @@ export const insertChild = (obj, target, element) => {
 
   return obj;
 };
+
+const processFiles = async (moduleFiles) => {
+  let elements = [];
+
+  for await (const file of Object.values(moduleFiles)) {
+    const module = await file();
+    const { props } = module;
+
+    if (props) {
+      const isExist = elements.find((element) => element.name === props.type);
+
+      if (isExist) {
+        isExist.list.push(props);
+      } else {
+        elements.push({ name: props.type, list: [props] });
+      }
+    }
+  }
+
+  return elements;
+};
+
+export const importFiles = async () => {
+  const sections = await processFiles(import.meta.glob('@atoms/**/index.ts'));
+  const elements = await processFiles(import.meta.glob('@molecules/**/index.ts'));
+  const templates = await processFiles(import.meta.glob('@organisms/**/index.ts'));
+
+  return {
+    Sections: sections,
+    Elements: elements,
+    Templates: templates,
+  };
+};

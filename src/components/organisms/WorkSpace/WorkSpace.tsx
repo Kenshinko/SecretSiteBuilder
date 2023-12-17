@@ -11,18 +11,18 @@ import 'react-resizable/css/styles.css';
 import classes from './WorkSpace.module.scss';
 
 // Отрисовываем динамический компонент
-const DynamicComponentRenderer = ({ Component, props, children, layout, onLayoutChange }) => {
+const DynamicComponentRenderer = ({ Component, props, source, children, layout }) => {
   // const DynamicComponent = lazy(() => import(`@atoms/${Component}/index.ts`));
-  const DynamicComponent = lazy(() => import(`../../atoms/${Component}/index.ts`));
+  const DynamicComponent = lazy(() => import(`../../${source}/${Component}/index.ts`));
 
   return (
     <Suspense fallback={<ComponentPreloader />}>
       <DynamicComponent
         key={Component}
         props={props}
+        source={source}
         children={children}
         layout={layout}
-        onLayoutChange={onLayoutChange}
       />
     </Suspense>
   );
@@ -71,14 +71,13 @@ const WorkSpace: React.FC = () => {
         layout={workspaceLayout}
         cols={6}
         rowHeight={30}
-        isDraggable
         // 76 пикселей зарезервировано под сайдбар + отступ слева.
         width={width - 76 - (width - 120) * 0.3}
         margin={[8, 8]}
         resizeHandles={['sw', 'se']}
-        isDroppable={true}
+        isDraggable
+        isDroppable
         onDrop={onDrop}
-        onLayoutChange={handleChangeLayout}
         draggableHandle=".drag-area"
       >
         {/* Динамически подгружаем компоненты и прокидывааем в них пропсы из одноимменных объектов */}
@@ -88,10 +87,10 @@ const WorkSpace: React.FC = () => {
               <ElementToolsPanel layout={el.layout} />
               <DynamicComponentRenderer
                 Component={el.name}
+                source={el.source || 'atoms'}
                 props={el.props}
                 children={el.children}
                 layout={el.layout}
-                onLayoutChange={handleChangeNestedLayout}
               />
             </div>
           );
