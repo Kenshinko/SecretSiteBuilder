@@ -4,90 +4,7 @@ import { nanoid } from 'nanoid';
 import { insertChild } from '@/utils';
 
 const initialState = {
-  activeElements: [
-    {
-      name: 'TitleH1',
-      props: { title: 'Заголовок H1' },
-      children: [],
-      layout: { i: nanoid(), x: 2, y: 0, w: 1, h: 1 },
-    },
-    {
-      name: 'ContainerDIV',
-      props: {},
-      children: [
-        {
-          name: 'TitleH1',
-          props: { title: 'Заголовок H1' },
-          children: [],
-          layout: { i: nanoid(), x: 0, y: 0, w: 1, h: 1 },
-        },
-        {
-          name: 'TitleH1',
-          props: { title: 'Заголовок H1' },
-          children: [],
-          layout: { i: nanoid(), x: 0, y: 0, w: 1, h: 1 },
-        },
-      ],
-      layout: { i: nanoid(), x: 0, y: 0, w: 2, h: 2 },
-    },
-    {
-      name: 'ContainerDIV',
-      props: {},
-      children: [
-        {
-          name: 'TitleH1',
-          props: { title: 'Заголовок H1' },
-          children: [],
-          layout: { i: nanoid(), x: 0, y: 0, w: 1, h: 1 },
-        },
-      ],
-      layout: { i: nanoid(), x: 0, y: 0, w: 2, h: 2 },
-    },
-    {
-      name: 'ContainerDIV',
-      props: {},
-      children: [
-        {
-          name: 'TitleH1',
-          props: { title: 'Заголовок H1' },
-          children: [],
-          layout: { i: nanoid(), x: 0, y: 0, w: 1, h: 1 },
-        },
-        {
-          name: 'TitleH1',
-          props: { title: 'Заголовок H1' },
-          children: [],
-          layout: { i: nanoid(), x: 0, y: 0, w: 1, h: 1 },
-        },
-      ],
-      layout: { i: nanoid(), x: 0, y: 0, w: 2, h: 2 },
-    },
-    {
-      name: 'ContainerDIV',
-      props: {},
-      children: [
-        {
-          name: 'TitleH1',
-          props: { title: 'Заголовок H1' },
-          children: [],
-          layout: { i: nanoid(), x: 0, y: 0, w: 1, h: 1 },
-        },
-        {
-          name: 'TitleH1',
-          props: { title: 'Заголовок H1' },
-          children: [],
-          layout: { i: nanoid(), x: 0, y: 0, w: 1, h: 1 },
-        },
-        {
-          name: 'TitleH1',
-          props: { title: 'Заголовок H1' },
-          children: [],
-          layout: { i: nanoid(), x: 0, y: 0, w: 1, h: 1 },
-        },
-      ],
-      layout: { i: nanoid(), x: 0, y: 0, w: 2, h: 2 },
-    },
-  ],
+  activeElements: [],
   currentDraggableItem: null,
 };
 
@@ -108,6 +25,10 @@ const layoutSlice = createSlice({
           y: layoutItem.y,
           w: draggableItem.layout.w,
           h: draggableItem.layout.h,
+          minW: draggableItem.layout.minW ? draggableItem.layout.minW : undefined,
+          maxW: draggableItem.layout.maxW || Infinity,
+          minH: draggableItem.layout.minH ? draggableItem.layout.minH : undefined,
+          maxH: draggableItem.layout.maxH || Infinity,
         },
       };
 
