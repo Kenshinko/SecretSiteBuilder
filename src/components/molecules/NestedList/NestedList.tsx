@@ -55,7 +55,7 @@ const NestedList: React.FC = ({ name, items }) => {
                       className={classes['icon__dotcircle']}
                     />
                   </ListItemIcon>
-                  <ListItemText primary={item.name} />
+                  <ListItemText primary={ item.title || item.name } />
                 </ListItemButton>
               );
             })}

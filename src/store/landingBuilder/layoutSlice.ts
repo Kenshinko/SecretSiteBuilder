@@ -15,6 +15,7 @@ const layoutSlice = createSlice({
     // Добавляем элемент в рабочую область
     addElement(state, action) {
       const { draggableItem, layoutItem, parentElement } = action.payload;
+      console.log(draggableItem, parentElement)
       // Задаем уникльный ID элементу и параметры
       const newElement = {
         ...draggableItem,

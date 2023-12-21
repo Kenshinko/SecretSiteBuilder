@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Tab, Tabs } from '@mui/material';
+import { Button, Tab, Tabs } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
+import Settings from '@mui/icons-material/Settings';
 
 import { importFiles } from '@/utils';
 import TabPanel from '@molecules/TabPanel';
 import NestedList from '@molecules/NestedList';
 
 import classes from './SideBar.module.scss';
+import SectionsManagerButton from '@/components/atoms/SectionsManagerButton';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SideBar: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [isActiveTab, setSctiveTab] = useState(false);
   const [isPromiseResolve, setPromiseResolved] = useState(false);
   const [sidebarMenuList, setSidebarMenuList] = useState({});
-  const tabsIcons = [<DashboardIcon />, <ExtensionIcon />, <ViewCarouselIcon />];
+  const tabsIcons = [<DashboardIcon />, <ExtensionIcon />, <ViewCarouselIcon />, <Settings />];
 
   useEffect(() => {
     importFiles().then((data) => {
@@ -36,6 +39,8 @@ const SideBar: React.FC = () => {
   const closePanel = () => {
     setSctiveTab(false);
   };
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -72,6 +77,11 @@ const SideBar: React.FC = () => {
                 label={key}
                 closePanel={closePanel}
               >
+                {key === 'Manage' && (
+                  <Link to="/sections-creator">
+                    <SectionsManagerButton onClick={() => navigate('sections-creator')}/>
+                  </Link>
+                )}
                 {items.map((item) => {
                   return (
                     <NestedList key={item.name} name={item.name} items={item.list}></NestedList>

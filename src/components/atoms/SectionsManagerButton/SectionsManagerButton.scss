@@ -1,0 +1,20 @@
+.sections-manager-btn {
+  margin-top: 15px;
+  & button {
+    background-color: rgb(130, 128, 128);
+    padding: 10px 25px;
+    display: flex;
+    margin: auto;
+    line-height: 24px;
+    &:nth-child(n) {
+      align-self: center;
+    }
+    &:hover {
+      opacity: 0.7;
+      border: none;
+    }
+    & span {
+      margin-left: 5px;
+    }
+  }
+}

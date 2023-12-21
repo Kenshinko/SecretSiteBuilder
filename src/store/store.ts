@@ -6,6 +6,7 @@ import hobbiesReducer from './cvTemplate/hobbiesSlice';
 import layoutReduser from './landingBuilder/layoutSlice';
 import utilityReducer from './landingBuilder/utilitySlice';
 import cardReducer from './cardSlice';
+import sectionsManagerSlice from './landingBuilder/sectionsManagerSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     layout: layoutReduser,
     utility: utilityReducer,
     card: cardReducer,
+    sectionsManager: sectionsManagerSlice
   },
 });
 

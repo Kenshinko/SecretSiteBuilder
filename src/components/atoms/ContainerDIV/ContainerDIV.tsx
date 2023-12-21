@@ -61,7 +61,7 @@ const ContainerDIV: React.FC = ({ children, layout }) => {
     <div ref={containerRef} className="wrapper" data-id={layout.i}>
       <ResponsiveGridLayout
         layout={workspaceLayout}
-        cols={2}
+        cols={6}
         width={width}
         rowHeight={30}
         margin={[0, 0]}
