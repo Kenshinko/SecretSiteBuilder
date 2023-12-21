@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
@@ -79,7 +79,7 @@ const SideBar: React.FC = () => {
               >
                 {key === 'Manage' && (
                   <Link to="/sections-creator">
-                    <SectionsManagerButton onClick={() => navigate('sections-creator')}/>
+                    <SectionsManagerButton onClick={() => navigate('sections-creator')} />
                   </Link>
                 )}
                 {items.map((item) => {
