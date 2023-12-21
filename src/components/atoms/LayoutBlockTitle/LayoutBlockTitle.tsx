@@ -1,12 +1,16 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 type LayoutBlockTitleProps = {
-  props: { text: string; wrapperStyle: {}, textStyle: {}; inputStyle: {} };
+  props: {
+    title: string;
+    titleStyle: { [key: string]: string | number };
+    inputStyle: { [key: string]: string | number };
+  };
 };
 
 const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
   const [isEdit, setEdit] = useState(false);
-  const [title, setTitle] = useState(props.text);
+  const [title, setTitle] = useState(props.title);
 
   const handleDoubleClick = () => {
     setEdit(true);
@@ -25,7 +29,7 @@ const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
       {isEdit ? (
         <input
           type="text"
-          style={{ ...props.textStyle, ...props.inputStyle }}
+          style={{ ...props.titleStyle, ...props.inputStyle }}
           value={title}
           onChange={handleChange}
           onKeyDown={handleSubmit}
@@ -33,7 +37,7 @@ const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
           onFocus={(e) => e.target.select()}
         />
       ) : (
-        <h1 style={props.textStyle} onDoubleClick={handleDoubleClick}>
+        <h1 style={props.titleStyle} onDoubleClick={handleDoubleClick}>
           {title}
         </h1>
       )}

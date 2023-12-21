@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import ResponsiveGridLayout from 'react-grid-layout';
 
 import { addElement } from '@store/landingBuilder/layoutSlice';
@@ -11,7 +11,7 @@ import 'react-resizable/css/styles.css';
 import classes from './WorkSpace.module.scss';
 
 // Отрисовываем динамический компонент
-const DynamicComponentRenderer = ({ Component, props, source, children, layout }) => {
+const DynamicComponentRenderer = ({ Component, props, columns, source, children, layout }) => {
   // const DynamicComponent = lazy(() => import(`@atoms/${Component}/index.ts`));
   const DynamicComponent = lazy(() => import(`../../${source}/${Component}/index.ts`));
 
@@ -20,6 +20,7 @@ const DynamicComponentRenderer = ({ Component, props, source, children, layout }
       <DynamicComponent
         key={Component}
         props={props}
+        columns={columns}
         source={source}
         children={children}
         layout={layout}
@@ -46,7 +47,7 @@ const WorkSpace: React.FC = () => {
     };
   }, []);
 
-  const onDrop = (layout, layoutItem, _event) => {
+  const onDrop = (layout, layoutItem) => {
     dispatch(addElement({ draggableItem, layoutItem, layout }));
   };
 
@@ -55,14 +56,14 @@ const WorkSpace: React.FC = () => {
     return [...acc, el.layout];
   }, []);
 
-  const handleChangeLayout = (layout) => {
-    // handleChangeNestedLayout();
-    // console.log('Основная разметка', layout);
-  };
+  // const handleChangeLayout = (layout) => {
+  // handleChangeNestedLayout();
+  // console.log('Основная разметка', layout);
+  // };
 
-  const handleChangeNestedLayout = (id, layout) => {
-    // console.log('Вложенная разметка', id, layout);
-  };
+  // const handleChangeNestedLayout = (id, layout) => {
+  // console.log('Вложенная разметка', id, layout);
+  // };
 
   return (
     <div className={classes['workspace']}>
@@ -89,6 +90,7 @@ const WorkSpace: React.FC = () => {
                 Component={el.name}
                 source={el.source || 'atoms'}
                 props={el.props}
+                columns={el.columns || 1}
                 children={el.children}
                 layout={el.layout}
               />
