@@ -1,13 +1,13 @@
 import ContainerDIV from '@components/atoms/ContainerDIV';
 
-type LayoutBlockArticleProps = {
+type SectionWrapperProps = {
   props: { text: string; wrapperStyle: {}; textStyle: {}; inputStyle: {} };
   children: [];
   layout: {};
 };
 
-const LayoutBlockArticle: React.FC<LayoutBlockArticleProps> = (props) => {
+const SectionWrapper: React.FC<SectionWrapperProps> = (props) => {
   return <ContainerDIV children={props.children} layout={props.layout} />;
 };
 
-export default LayoutBlockArticle;
+export default SectionWrapper;

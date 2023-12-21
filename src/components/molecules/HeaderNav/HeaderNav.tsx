@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Logo from "../../atoms/Logo";
 import NavLink from "../../atoms/NavLink";
 
@@ -8,7 +9,9 @@ const HeaderNav = () => {
     <nav className={classes["header-nav"]}>
       <Logo />
       <ul className={classes["header-nav-list"]}>
-        <NavLink label="Resume" />
+        <Link to='/'>
+          <NavLink label="Constructor" />
+        </Link>
         <NavLink label="Reserved" />
         <NavLink label="Reserved" />
         <NavLink label="Reserved" />

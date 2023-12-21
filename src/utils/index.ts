@@ -1,3 +1,5 @@
+import { listenerCancelled } from "@reduxjs/toolkit/dist/listenerMiddleware/exceptions";
+
 export const insertChild = (obj, target, element) => {
   if (!target) {
     return [...obj, element];
@@ -31,8 +33,7 @@ const processFiles = async (moduleFiles) => {
     const { props } = module;
 
     if (props) {
-      const isExist = elements.find((element) => element.name === props.type);
-
+      const isExist = elements.find((element) => element.name === props.type); 
       if (isExist) {
         isExist.list.push(props);
       } else {
@@ -45,13 +46,23 @@ const processFiles = async (moduleFiles) => {
 };
 
 export const importFiles = async () => {
-  const sections = await processFiles(import.meta.glob('@atoms/**/index.ts'));
-  const elements = await processFiles(import.meta.glob('@molecules/**/index.ts'));
+  // const sections = await processFiles(import.meta.glob('@molecules/**/index.ts'));
+  let lsSections = [];
+  try {
+    const data = JSON.parse(localStorage.getItem('sections'));
+    if (data) {
+      lsSections = data;
+    }
+  } catch (err){
+    console.log(err)
+  }
+  const elements = await processFiles(import.meta.glob('@atoms/**/index.ts'));
   const templates = await processFiles(import.meta.glob('@organisms/**/index.ts'));
 
   return {
-    Sections: sections,
+    Sections: lsSections,
     Elements: elements,
     Templates: templates,
+    Manage: []
   };
 };

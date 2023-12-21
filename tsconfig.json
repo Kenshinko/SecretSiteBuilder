@@ -34,6 +34,6 @@
       "@types/*": ["./src/types/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "../SectionsCreatorComponent/src/SectionsManager"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
