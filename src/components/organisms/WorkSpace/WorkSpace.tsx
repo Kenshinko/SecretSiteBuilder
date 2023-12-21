@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import ResponsiveGridLayout from 'react-grid-layout';
 
 import { addElement } from '@store/landingBuilder/layoutSlice';
@@ -11,15 +11,20 @@ import 'react-resizable/css/styles.css';
 import classes from './WorkSpace.module.scss';
 
 // Отрисовываем динамический компонент
-const DynamicComponentRenderer = ({ Component, props, source, children, layout }) => {
+const DynamicComponentRenderer = ({ Component, props, columns, source, children, layout }) => {
   // const DynamicComponent = lazy(() => import(`@atoms/${Component}/index.ts`));
   const DynamicComponent = lazy(() => import(`../../${source}/${Component}/index.ts`));
+
+  // useEffect(() => {
+  //   setLoaded(true);
+  // }, [DynamicComponent]);
 
   return (
     <Suspense fallback={<ComponentPreloader />}>
       <DynamicComponent
         key={Component}
         props={props}
+        columns={columns}
         source={source}
         children={children}
         layout={layout}
@@ -89,6 +94,7 @@ const WorkSpace: React.FC = () => {
                 Component={el.name}
                 source={el.source || 'atoms'}
                 props={el.props}
+                columns={el.columns || 1}
                 children={el.children}
                 layout={el.layout}
               />

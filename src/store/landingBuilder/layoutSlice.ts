@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
 
-import { insertChild } from '@/utils';
+import { insertChildrenElement } from '@/utils';
 
 const initialState = {
   activeElements: [],
@@ -12,7 +12,7 @@ const layoutSlice = createSlice({
   name: 'layout',
   initialState,
   reducers: {
-    // Добавляем элемент в рабочую область
+    // Добавляем блок в рабочую область
     addElement(state, action) {
       const { draggableItem, layoutItem, parentElement } = action.payload;
       // Задаем уникльный ID элементу и параметры
@@ -32,15 +32,55 @@ const layoutSlice = createSlice({
         },
       };
 
-      const renewElements = insertChild(state.activeElements, parentElement, newElement);
+      const renewElements = insertChildrenElement(state.activeElements, parentElement, newElement);
       state.activeElements = [...renewElements];
     },
+    copyElement(state, action) {
+      const indx = state.activeElements.findIndex(
+        (element) => element.layout.i === action.payload.i,
+      );
+
+      console.log(newElement);
+    },
+    // Удаляем блок из рабочей области
+    deleteElement(state, action) {
+      const indx = state.activeElements.findIndex(
+        (element) => element.layout.i === action.payload.i,
+      );
+
+      state.activeElements.splice(indx, 1);
+    },
+    // Увеличиваем количество колонок в блоке
+    increaseElementColumns(state, action) {
+      const indx = state.activeElements.findIndex(
+        (element) => element.layout.i === action.payload.i,
+      );
+
+      state.activeElements[indx].layout.w = state.activeElements[indx].layout.w + 1;
+      state.activeElements[indx].columns = state.activeElements[indx].columns + 1;
+    },
+    // Уменьшаем количество колонок в блоке
+    decreaseElementColumns(state, action) {
+      const indx = state.activeElements.findIndex(
+        (element) => element.layout.i === action.payload.i,
+      );
+
+      state.activeElements[indx].layout.w = state.activeElements[indx].layout.w - 1;
+      state.activeElements[indx].columns = state.activeElements[indx].columns - 1;
+    },
+    // Помещаем информацию о текущем перемещаемом блоке в стор
     setDraggableItem(state, action) {
       state.currentDraggableItem = action.payload;
-      console.log(action.payload);
     },
   },
 });
 
 export default layoutSlice.reducer;
-export const { addElement, setDraggableItem } = layoutSlice.actions;
+export const {
+  addElement,
+  copyElement,
+  deleteElement,
+  increaseElementColumns,
+  decreaseElementColumns,
+  setDraggableItem,
+} = layoutSlice.actions;

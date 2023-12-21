@@ -4,6 +4,7 @@ export const props = {
   name: 'LayoutBlockArticle',
   type: 'Articles',
   source: 'molecules',
+  columns: 2,
   props: {},
   children: [
     {

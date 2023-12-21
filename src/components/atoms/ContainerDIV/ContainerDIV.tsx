@@ -13,6 +13,7 @@ import classes from './ContainerDIV.module.scss';
 const DynamicComponentRenderer = ({ Component, props, source, children, layout }) => {
   let DynamicComponent = () => <></>;
 
+  // Не добавлять в import /* @vite-ignore */, все сломается!
   if (source === 'organisms') {
     DynamicComponent = lazy(() => import(`@organisms/${Component}/index.ts`));
   }
@@ -36,16 +37,28 @@ const DynamicComponentRenderer = ({ Component, props, source, children, layout }
   );
 };
 
-const ContainerDIV: React.FC = ({ children, layout }) => {
+const ContainerDIV: React.FC = ({ children, layout, columns }) => {
   const dispatch = useAppDispatch();
   const containerRef = useRef(null);
   const [width, setWidth] = useState(0);
   const draggableItem = useAppSellector((state) => state.layout.currentDraggableItem);
 
   useEffect(() => {
+    // Для выравнивания дочерних элементов указываем начальное значение ширины родителя.
     const containerWidth = containerRef.current.getBoundingClientRect().width;
     setWidth(containerWidth);
-  }, []);
+
+    // Отслеживаем изменение ширины родителя, чтобы динамически изменять ширину дочерних элементов.
+    const handleResize = () => {
+      setWidth(containerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [layout.w, window.innerWidth]); // Мониторим изменения ширины родителя и окна браузера.
 
   const onDrop = (layout, layoutItem, _event) => {
     const parentElement = _event.target.closest('.wrapper').dataset.id;
@@ -61,7 +74,7 @@ const ContainerDIV: React.FC = ({ children, layout }) => {
     <div ref={containerRef} className="wrapper" data-id={layout.i}>
       <ResponsiveGridLayout
         layout={workspaceLayout}
-        cols={2}
+        cols={columns}
         width={width}
         rowHeight={30}
         margin={[0, 0]}

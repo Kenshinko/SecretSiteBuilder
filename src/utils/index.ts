@@ -1,11 +1,16 @@
-export const insertChild = (obj, target, element) => {
+export const insertChildrenElement = (obj, target, element) => {
+  console.log(obj, target, element);
+
+  // Когда блок помещается в рабочую область.
   if (!target) {
     return [...obj, element];
   }
 
   if (Array.isArray(obj)) {
-    const newArr = obj.map((item) => insertChild(item, target, element));
+    const newArr = obj.map((item) => insertChildrenElement(item, target, element));
     return newArr;
+
+    // Когда блок помещается в другой блок.
   } else if (typeof obj === 'object' && obj !== null) {
     if (obj.layout?.i === target) {
       const newObj = { ...obj };
@@ -15,7 +20,7 @@ export const insertChild = (obj, target, element) => {
 
     const newObj = { ...obj };
     for (const key in newObj) {
-      newObj[key] = insertChild(newObj[key], target, element);
+      newObj[key] = insertChildrenElement(newObj[key], target, element);
     }
     return newObj;
   }
@@ -45,8 +50,8 @@ const processFiles = async (moduleFiles) => {
 };
 
 export const importFiles = async () => {
-  const sections = await processFiles(import.meta.glob('@atoms/**/index.ts'));
-  const elements = await processFiles(import.meta.glob('@molecules/**/index.ts'));
+  const elements = await processFiles(import.meta.glob('@atoms/**/index.ts'));
+  const sections = await processFiles(import.meta.glob('@molecules/**/index.ts'));
   const templates = await processFiles(import.meta.glob('@organisms/**/index.ts'));
 
   return {
