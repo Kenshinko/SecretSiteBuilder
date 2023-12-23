@@ -1,0 +1,14 @@
+.container {
+    padding-left: 56px;
+    height: calc(100dvh - 72px);
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-left: 250px;
+    width: 70%;
+    min-height: calc(100% - 58px);
+    background-color: rgb(250, 250, 250);
+    border-radius: 5px;
+    box-shadow: inset 0 0 6px rgba(90, 90, 90, 0.5);
+
+}
