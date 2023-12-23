@@ -9,9 +9,10 @@ import { importFiles } from '@/utils';
 import TabPanel from '@molecules/TabPanel';
 import NestedList from '@molecules/NestedList';
 
+import ManagerButton from '@/components/atoms/ManagerButton';
+import { useNavigate } from 'react-router-dom';
+
 import classes from './SideBar.module.scss';
-import SectionsManagerButton from '@/components/atoms/SectionsManagerButton';
-import { Link, useNavigate } from 'react-router-dom';
 
 const SideBar: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(0);
@@ -78,10 +79,18 @@ const SideBar: React.FC = () => {
                 closePanel={closePanel}
               >
                 {key === 'Manage' && (
-                  <Link to="/sections-creator">
-                    <SectionsManagerButton onClick={() => navigate('sections-creator')} />
-                  </Link>
+                  <>
+                    <ManagerButton
+                      onClick={() => navigate('sections-creator')}
+                      name="Section Creator"
+                    />
+                    <ManagerButton
+                      onClick={() => navigate('template-creator')}
+                      name="Template Creator"
+                    />
+                  </>
                 )}
+
                 {items.map((item) => {
                   return (
                     <NestedList key={item.name} name={item.name} items={item.list}></NestedList>
