@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import ResponsiveGridLayout from 'react-grid-layout';
+import ResponsiveGridLayout, { Layout } from 'react-grid-layout';
 
 import { addElement } from '@store/landingBuilder/layoutSlice';
 import { useAppDispatch, useAppSellector } from '@hooks/cvTemplateHooks';
@@ -9,9 +9,28 @@ import ElementToolsPanel from '@components/organisms/ElementToolsPanel';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import classes from './WorkSpace.module.scss';
+import { T_BlockElement } from '@/types/landingBuilder';
 
+type DynamicComponentRendererProps = {
+  Component: string;
+  props?: { [key: string]: string | number | { [key: string]: string | number } };
+  columns: number;
+  source: string;
+  children?: T_BlockElement[];
+  layout: Layout;
+};
+
+// ========================================================================== \\
 // Отрисовываем динамический компонент
-const DynamicComponentRenderer = ({ Component, props, columns, source, children, layout }) => {
+// По сути это зависимый компонент, который отвечает за рендеринг условного блока
+const DynamicComponentRenderer: React.FC<DynamicComponentRendererProps> = ({
+  Component,
+  props,
+  columns,
+  source,
+  children,
+  layout,
+}) => {
   // const DynamicComponent = lazy(() => import(`@atoms/${Component}/index.ts`));
   const DynamicComponent = lazy(() => import(`../../${source}/${Component}/index.ts`));
 
@@ -28,12 +47,13 @@ const DynamicComponentRenderer = ({ Component, props, columns, source, children,
     </Suspense>
   );
 };
+// ========================================================================== \\
 
 const WorkSpace: React.FC = () => {
   const dispatch = useAppDispatch();
   const [width, setWidth] = useState(window.innerWidth);
   const draggableItem = useAppSellector((state) => state.layout.currentDraggableItem);
-  const activeElements = useAppSellector((state) => state.layout.activeElements);
+  const activeElements: T_BlockElement[] = useAppSellector((state) => state.layout.activeElements);
 
   useEffect(() => {
     const handleResize = () => {
@@ -47,19 +67,20 @@ const WorkSpace: React.FC = () => {
     };
   }, []);
 
-  const onDrop = (layout, layoutItem) => {
+  const onDrop = (layout: Layout[], layoutItem: Layout) => {
     dispatch(addElement({ draggableItem, layoutItem, layout }));
   };
 
   // Вытаскиваем макеты наших активных компонентов
-  const workspaceLayout = activeElements.reduce((acc, el) => {
+  const workspaceLayout = activeElements.reduce((acc: Layout[], el: T_BlockElement) => {
+    console.log(el);
     return [...acc, el.layout];
   }, []);
 
-  // const handleChangeLayout = (layout) => {
-  // handleChangeNestedLayout();
-  // console.log('Основная разметка', layout);
-  // };
+  const handleChangeLayout = (_layout: Layout[], _oldItem: Layout, newItem: Layout) => {
+    // handleChangeNestedLayout();
+    console.log(newItem);
+  };
 
   // const handleChangeNestedLayout = (id, layout) => {
   // console.log('Вложенная разметка', id, layout);
@@ -80,6 +101,7 @@ const WorkSpace: React.FC = () => {
         isDroppable
         onDrop={onDrop}
         draggableHandle=".drag-area"
+        onResizeStop={handleChangeLayout}
       >
         {/* Динамически подгружаем компоненты и прокидывааем в них пропсы из одноимменных объектов */}
         {activeElements.map((el) => {

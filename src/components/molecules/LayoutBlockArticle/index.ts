@@ -11,7 +11,7 @@ export const props = {
       name: 'LayoutBlockTitle',
       source: 'atoms',
       props: {
-        title: 'Default Title',
+        text: 'Default Title',
         titleStyle: { textAlign: 'center', fontSize: 30 },
         inputStyle: { width: '100%', border: 'none', fontWeight: 'bold' },
       },
