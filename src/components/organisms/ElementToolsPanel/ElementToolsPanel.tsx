@@ -15,10 +15,15 @@ import {
   decreaseElementColumns,
 } from '@store/landingBuilder/layoutSlice';
 import { useAppDispatch } from '@hooks/cvTemplateHooks';
+import { Layout } from 'react-grid-layout';
 
 import classes from './ElementToolsPanel.module.scss';
 
-const ElementToolsPanel: React.FC = ({ layout }) => {
+type ElementToolsPanelProps = {
+  layout: Layout;
+};
+
+const ElementToolsPanel: React.FC<ElementToolsPanelProps> = ({ layout }) => {
   const dispatch = useAppDispatch();
 
   return (

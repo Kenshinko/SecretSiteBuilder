@@ -1,3 +1,6 @@
+import { Layout } from 'react-grid-layout';
+
+// Непонятные интерфейсы
 export interface IElement {
   element: string;
   content: string;
@@ -42,3 +45,14 @@ export interface IStyle {
 export interface IStyleFormObj {
   [key: string]: string | number;
 }
+
+// Гигачадовая типизация от Кенси
+export type T_BlockElement = {
+  name: string;
+  type: string;
+  source: string;
+  columns?: number;
+  props?: { [key: string]: string | number | { [key: string]: string | number } };
+  children?: T_BlockElement[];
+  layout: Layout;
+};

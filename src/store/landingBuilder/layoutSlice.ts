@@ -2,8 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
 
 import { insertChild } from '@/utils';
+import { Layout } from 'react-grid-layout';
+import { T_BlockElement } from '@/types/landingBuilder';
 
-const initialState = {
+type stateProps = {
+  activeElements: T_BlockElement[];
+  currentDraggableItem: Layout | null;
+};
+
+const initialState: stateProps = {
   activeElements: [],
   currentDraggableItem: null,
 };
@@ -15,7 +22,6 @@ const layoutSlice = createSlice({
     // Добавляем элемент в рабочую область
     addElement(state, action) {
       const { draggableItem, layoutItem, parentElement } = action.payload;
-      console.log(draggableItem, parentElement);
       // Задаем уникльный ID элементу и параметры
       const newElement = {
         ...draggableItem,
@@ -36,13 +42,20 @@ const layoutSlice = createSlice({
       const renewElements = insertChild(state.activeElements, parentElement, newElement);
       state.activeElements = [...renewElements];
     },
-    // TODO: Копируем указанный элемент
+    // Копируем указанный элемент
     copyElement(state, action) {
       const indx = state.activeElements.findIndex(
         (element) => element.layout.i === action.payload.i,
       );
 
-      console.log(indx);
+      const newElement = {
+        ...state.activeElements[indx],
+        layout: {
+          ...state.activeElements[indx].layout,
+          i: nanoid(),
+        },
+      };
+      state.activeElements.splice(indx + 1, 0, newElement);
     },
     // Удаляем блок из рабочей области
     deleteElement(state, action) {
@@ -59,7 +72,7 @@ const layoutSlice = createSlice({
       );
 
       state.activeElements[indx].layout.w = state.activeElements[indx].layout.w + 1;
-      state.activeElements[indx].columns = state.activeElements[indx].columns + 1;
+      state.activeElements[indx].columns = state.activeElements[indx].columns! + 1;
     },
     // Уменьшаем количество колонок в блоке
     decreaseElementColumns(state, action) {
@@ -68,7 +81,7 @@ const layoutSlice = createSlice({
       );
 
       state.activeElements[indx].layout.w = state.activeElements[indx].layout.w - 1;
-      state.activeElements[indx].columns = state.activeElements[indx].columns - 1;
+      state.activeElements[indx].columns = state.activeElements[indx].columns! - 1;
     },
     // Помещаем информацию о текущем перемещаемом блоке в стор
     setDraggableItem(state, action) {
