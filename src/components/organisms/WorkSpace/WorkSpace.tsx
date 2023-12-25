@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import ResponsiveGridLayout, { Layout } from 'react-grid-layout';
 
-import { addElement } from '@store/landingBuilder/layoutSlice';
+import { addElement, changeElement } from '@store/landingBuilder/layoutSlice';
 import { useAppDispatch, useAppSellector } from '@hooks/cvTemplateHooks';
 import ComponentPreloader from '@components/atoms/ComponentPreloader';
 import ElementToolsPanel from '@components/organisms/ElementToolsPanel';
@@ -67,24 +67,19 @@ const WorkSpace: React.FC = () => {
     };
   }, []);
 
-  const onDrop = (layout: Layout[], layoutItem: Layout) => {
+  const handleDropElement = (layout: Layout[], layoutItem: Layout) => {
     dispatch(addElement({ draggableItem, layoutItem, layout }));
   };
 
   // Вытаскиваем макеты наших активных компонентов
   const workspaceLayout = activeElements.reduce((acc: Layout[], el: T_BlockElement) => {
-    console.log(el);
     return [...acc, el.layout];
   }, []);
 
-  const handleChangeLayout = (_layout: Layout[], _oldItem: Layout, newItem: Layout) => {
-    // handleChangeNestedLayout();
-    console.log(newItem);
+  const handleChangeElement = (_layout: Layout[], oldItem: Layout, newItem: Layout) => {
+    const isChange = JSON.stringify(oldItem) !== JSON.stringify(newItem);
+    if (isChange) dispatch(changeElement(newItem));
   };
-
-  // const handleChangeNestedLayout = (id, layout) => {
-  // console.log('Вложенная разметка', id, layout);
-  // };
 
   return (
     <div className={classes['workspace']}>
@@ -99,9 +94,10 @@ const WorkSpace: React.FC = () => {
         resizeHandles={['sw', 'se']}
         isDraggable
         isDroppable
-        onDrop={onDrop}
+        onDrop={handleDropElement}
         draggableHandle=".drag-area"
-        onResizeStop={handleChangeLayout}
+        onResizeStop={handleChangeElement}
+        onDragStop={handleChangeElement}
       >
         {/* Динамически подгружаем компоненты и прокидывааем в них пропсы из одноимменных объектов */}
         {activeElements.map((el) => {
