@@ -19,10 +19,10 @@ const layoutSlice = createSlice({
   name: 'layout',
   initialState,
   reducers: {
-    // Добавляем элемент в рабочую область
+    // Добавляем блок в рабочую область
     addElement(state, action) {
       const { draggableItem, layoutItem, parentElement } = action.payload;
-      // Задаем уникльный ID элементу и параметры
+      // Задаем уникльный ID блоку и параметры
       const newElement = {
         ...draggableItem,
         layout: {
@@ -42,7 +42,7 @@ const layoutSlice = createSlice({
       const renewElements = insertChild(state.activeElements, parentElement, newElement);
       state.activeElements = [...renewElements];
     },
-    // Копируем указанный элемент
+    // Копируем блок
     copyElement(state, action) {
       const indx = state.activeElements.findIndex(
         (element) => element.layout.i === action.payload.i,
@@ -56,6 +56,19 @@ const layoutSlice = createSlice({
         },
       };
       state.activeElements.splice(indx + 1, 0, newElement);
+    },
+    // Изменяем положение блока в рабочей области
+    changeElement(state, action) {
+      const indx = state.activeElements.findIndex(
+        (element) => element.layout.i === action.payload.i,
+      );
+
+      state.activeElements[indx] = {
+        ...state.activeElements[indx],
+        layout: {
+          ...action.payload,
+        },
+      };
     },
     // Удаляем блок из рабочей области
     deleteElement(state, action) {
@@ -95,6 +108,7 @@ export default layoutSlice.reducer;
 export const {
   addElement,
   copyElement,
+  changeElement,
   deleteElement,
   increaseElementColumns,
   decreaseElementColumns,
