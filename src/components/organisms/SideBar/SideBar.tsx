@@ -78,9 +78,28 @@ const SideBar: React.FC = () => {
                 closePanel={closePanel}
               >
                 {key === 'Manage' && (
+<<<<<<< Updated upstream
                   <Link to="/sections-creator">
                     <SectionsManagerButton onClick={() => navigate('sections-creator')}/>
                   </Link>
+=======
+                  <>
+                    <ManagerButton
+                      onClick={() => {
+                        closePanel();
+                        navigate('sections-creator');
+                      }}
+                      name="Section Creator"
+                    />
+                    <ManagerButton
+                      onClick={() => {
+                        closePanel();
+                        navigate('template-creator')
+                      }}
+                      name="Template Creator"
+                    />
+                  </>
+>>>>>>> Stashed changes
                 )}
                 {items.map((item) => {
                   return (

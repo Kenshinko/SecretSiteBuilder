@@ -1,19 +1,33 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 
 type LayoutBlockTitleProps = {
+<<<<<<< Updated upstream
   props: { text: string; wrapperStyle: {}, textStyle: {}; inputStyle: {} };
+=======
+  props: {
+    text: string;
+    wrapperStyle: { [key: string]: string | number };
+    textStyle: { [key: string]: string | number };
+    inputStyle: { [key: string]: string | number };
+  };
+>>>>>>> Stashed changes
 };
 
 const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
+
   const [isEdit, setEdit] = useState(false);
-  const [title, setTitle] = useState(props.text);
+  const [text, setText] = useState(props.text);
+
+  useEffect(() => {
+    setText(props.text)
+  }, [props.text])
 
   const handleDoubleClick = () => {
     setEdit(true);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setText(e.target.value);
   };
 
   const handleSubmit = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -21,12 +35,16 @@ const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
   };
 
   return (
-    <div>
+    <div style={props.wrapperStyle}>
       {isEdit ? (
         <input
           type="text"
           style={{ ...props.textStyle, ...props.inputStyle }}
+<<<<<<< Updated upstream
           value={title}
+=======
+          value={props.text}
+>>>>>>> Stashed changes
           onChange={handleChange}
           onKeyDown={handleSubmit}
           autoFocus
@@ -34,7 +52,11 @@ const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
         />
       ) : (
         <h1 style={props.textStyle} onDoubleClick={handleDoubleClick}>
+<<<<<<< Updated upstream
           {title}
+=======
+          {text}
+>>>>>>> Stashed changes
         </h1>
       )}
     </div>

@@ -5,7 +5,12 @@ export const props = {
   type: 'Simple Elements',
   source: 'atoms',
   props: {
+<<<<<<< Updated upstream
     title: 'Default Title',
+=======
+    text: 'Default Title',
+    wrapperStyle: {},
+>>>>>>> Stashed changes
     titleStyle: { textAlign: 'center', fontSize: 30 },
     inputStyle: { width: '100%', border: 'none', fontWeight: 'bold' },
   },

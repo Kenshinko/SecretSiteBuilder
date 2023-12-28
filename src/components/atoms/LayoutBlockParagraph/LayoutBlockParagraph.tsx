@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 
 type LayoutBlockParagraphProps = {
   props: { text: string; wrapperStyle: {}; textStyle: {}; inputStyle: {} };
@@ -7,6 +7,10 @@ type LayoutBlockParagraphProps = {
 const LayoutBlockParagraph: React.FC<LayoutBlockParagraphProps> = ({ props }) => {
   const [isEdit, setEdit] = useState(false);
   const [text, setText] = useState(props.text);
+
+  useEffect(() => {
+    setText(props.text)
+  }, [props.text]) 
 
   const handleDoubleClick = () => {
     setEdit(true);
