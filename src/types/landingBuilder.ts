@@ -92,6 +92,7 @@ export type DynamicBlockProps = {
   columns: number;
   props: {
     text: string;
+    url?: string;
     wrapperStyle: { [key: string]: string | number };
     textStyle: { [key: string]: string | number };
     inputStyle: { [key: string]: string | number };
@@ -105,5 +106,6 @@ export type TitleH1Props = {
     text: string;
   };
 };
+
 // Типизация вспомогательных функций -> utils/index.ts
 export type TProcessFiles = Record<string, () => Promise<unknown>>;

@@ -1,15 +1,6 @@
-type LayoutBlockButtonProps = {
-  props: {
-    text: string;
-    url: string,
-    wrapperStyle: { [key: string]: string | number };
-    textStyle: { [key: string]: string | number };
-    inputStyle: { [key: string]: string | number };
-  };
-};
+import { DynamicBlockProps } from '@/types/landingBuilder';
 
-const LayoutBlockButton: React.FC<LayoutBlockButtonProps> = ({ props }) => {
-  
+const LayoutBlockButton: React.FC<DynamicBlockProps> = ({ props }) => {
   return (
     <div style={props.wrapperStyle}>
       <button style={props.textStyle}>{props.text}</button>

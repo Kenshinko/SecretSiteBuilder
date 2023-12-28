@@ -1,22 +1,14 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 
-type LayoutBlockTitleProps = {
-  props: {
-    text: string;
-    wrapperStyle: { [key: string]: string | number };
-    textStyle: { [key: string]: string | number };
-    inputStyle: { [key: string]: string | number };
-  };
-};
+import { DynamicBlockProps } from '@/types/landingBuilder';
 
-const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
-
+const LayoutBlockTitle: React.FC<DynamicBlockProps> = ({ props }) => {
   const [isEdit, setEdit] = useState(false);
   const [text, setText] = useState(props.text);
 
   useEffect(() => {
-    setText(props.text)
-  }, [props.text])
+    setText(props.text);
+  }, [props.text]);
 
   const handleDoubleClick = () => {
     setEdit(true);
