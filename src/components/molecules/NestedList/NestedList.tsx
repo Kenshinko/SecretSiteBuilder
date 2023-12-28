@@ -7,15 +7,11 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import { useAppDispatch } from '@/hooks/cvTemplateHooks';
 import { setDraggableItem } from '@/store/landingBuilder/layoutSlice';
+import { NestedListProps } from '@/types/landingBuilder';
 
 import classes from './NestedList.module.scss';
 
-// type NestedListProps = {
-//   name: string;
-//   items: {};
-// };
-
-const NestedList: React.FC = ({ name, items }) => {
+const NestedList: React.FC<NestedListProps> = ({ name, items }) => {
   const dispatch = useAppDispatch();
   const [isOpen, setOpen] = useState(false);
 
@@ -55,7 +51,7 @@ const NestedList: React.FC = ({ name, items }) => {
                       className={classes['icon__dotcircle']}
                     />
                   </ListItemIcon>
-                  <ListItemText primary={ item.title || item.name } />
+                  <ListItemText primary={item.title || item.name} />
                 </ListItemButton>
               );
             })}

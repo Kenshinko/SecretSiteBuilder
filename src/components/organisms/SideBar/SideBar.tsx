@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Tab, Tabs } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExtensionIcon from '@mui/icons-material/Extension';
@@ -6,11 +7,10 @@ import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import Settings from '@mui/icons-material/Settings';
 
 import { importFiles } from '@/utils';
+import { T_SidebarMenuItem } from '@/types/landingBuilder';
 import TabPanel from '@molecules/TabPanel';
 import NestedList from '@molecules/NestedList';
-
 import ManagerButton from '@/components/atoms/ManagerButton';
-import { useNavigate } from 'react-router-dom';
 
 import classes from './SideBar.module.scss';
 
@@ -91,7 +91,7 @@ const SideBar: React.FC = () => {
                   </>
                 )}
 
-                {items.map((item) => {
+                {(items as T_SidebarMenuItem[]).map((item) => {
                   return (
                     <NestedList key={item.name} name={item.name} items={item.list}></NestedList>
                   );
