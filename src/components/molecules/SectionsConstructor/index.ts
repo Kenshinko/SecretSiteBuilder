@@ -1,3 +1,3 @@
-import Constructor from "./Constructor";
+import {MemoizedSectionsConstructor} from "./SectionsConstructor";
 
-export default Constructor;
+export default MemoizedSectionsConstructor;

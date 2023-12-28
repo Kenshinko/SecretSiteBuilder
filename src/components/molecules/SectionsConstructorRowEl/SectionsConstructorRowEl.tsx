@@ -1,17 +1,23 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { editRowDate, handleSettingsMenu } from '../../../store/landingBuilder/sectionsManagerSlice';
 
-import './ConstructorRowEl.scss';
+import './SectionsConstructorRowEl.scss';
 
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
+import SectionsConstructorBlockElement from '@/components/atoms/SectionsConstructorBlockElement';
+import { useAppSellector } from '@/hooks/cvTemplateHooks';
 
-const ConstructorRowEl = ({ row }) => {
+type SectionsConstructorRowElType = {
+  row: number | string
+}
+
+const SectionsConstructorRowEl: React.FC<SectionsConstructorRowElType> = ({ row }) => {
 
     const dispatch = useDispatch();
 
-    const layoutDate = useSelector(state => state.sectionsManager.layoutDate);
+    const layoutDate = useAppSellector(state => state.sectionsManager.layoutDate);
     const layoutRow = layoutDate[row];
     const columns = layoutRow.length;
 
@@ -30,7 +36,7 @@ const ConstructorRowEl = ({ row }) => {
 
     // добавление блока в ряду
     const addColumn = () => {
-        if (columns < 3 && calcNewRowW(columns, 1) <= 6) {
+        if (columns < 6 && calcNewRowW(columns, 1) <= 6) {
             const id = Number(String(row) + (columns + 1));
             const newValue = {i: id, x: columns, y: row - 1, w: 1, h: 1};
             dispatch(handleSettingsMenu())
@@ -49,7 +55,7 @@ const ConstructorRowEl = ({ row }) => {
     }
     
     // проверка ширины секции при добавлении блока или изменении ширины одного из блоков, что бы было меньше 6
-    const calcNewRowW = (col, value) => {
+    const calcNewRowW: (col: number, value: number) => number = (col, value) => {
       let prevColsSum = 0;
       for (let i = 0; i < col; i++) {
         prevColsSum += layoutRow[i].w;
@@ -62,40 +68,30 @@ const ConstructorRowEl = ({ row }) => {
     }
 
     const renderColumns = () => {
-      const columnsEls = [];
-      const r = String(row);
-      for (let i = 1; i <= columns; i ++) {
-        // задание текста и стилей для предпросмотра содержимого
-        const isImg = false || layoutDate[r][i - 1].props?.key;
-        const text = layoutDate[r][i - 1].props?.text;
-        const wrapperStyle = layoutDate[r][i - 1].props?.wrapperStyle;
-        const textStyle = layoutDate[r][i - 1].props?.textStyle;
+      const r:string = String(row);
+      return layoutRow.map((el: {[key: string]: any}, idx: number) => {
+        const i = idx + 1;
+        const type = '' || el.props?.key;
+
         // задание размеров для секции в зависимости от fr
         const style = {
-          height: `${layoutDate[r][i - 1].h*30}px`,
-          width: `${layoutDate[r][i - 1].w*191}px`,
+          height: `${el.h*30}px`,
+          width: `${el.w*191}px`,
           cursor: 'pointer',
         }
-        // отображение секций одного ряда
-        columnsEls.push((
-            <div 
+        
+        return (
+          <div 
               key = {i} 
               className="constructor-container__row__el__section" 
               style={style}
               onClick={() => dispatch(handleSettingsMenu(r + i))}
               >
                 {/* Предпросмотр содержимого секции */}
-                <div className='constructor-container__row__el__section__content' style={wrapperStyle}>
-                  {isImg ? (
-                    <img src={text} style={{width: '100%'}}></img>
-                  ) : 
-                      <div style={textStyle}>{text}</div>
-                  }
-                </div>
+                <SectionsConstructorBlockElement type={type} params={el}/>
             </div>
-        ))
-      }
-      return columnsEls;
+        )
+      })
     }
 
     return (
@@ -115,4 +111,4 @@ const ConstructorRowEl = ({ row }) => {
     );
 }
 
-export default ConstructorRowEl;
+export const MemoizedSectionsConstructorRowEl =  memo(SectionsConstructorRowEl);

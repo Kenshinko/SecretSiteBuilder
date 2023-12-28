@@ -22,12 +22,18 @@ const SettingsMenu = () => {
   const layoutDate = useSelector((state) => state.sectionsManager.layoutDate);
   const layoutRow = layoutDate[r];
 
+
   const [type, setType] = useState('');
-  const [inputValue, setInputValue] = useState('');
+  const [text, setText] = useState('');
+  const [ url, setUrl ] = useState('');
 
   useEffect(() => {
     setTextToElement();
-  }, [inputValue]);
+  }, [text]);
+
+  useEffect(() => {
+    setUrlToElement();
+  }, [url])
 
   const dispatch = useDispatch();
 
@@ -41,10 +47,12 @@ const SettingsMenu = () => {
     {
       label: 'Block Title',
       value: 'LayoutBlockTitle',
-      key: 'text',
+      key: 'title',
       title: {
+        key: 'title',
         text: 'Block title text',
-        textStyle: { textAlign: 'center', fontSize: '18px' },
+        wrapperStyle: { lineHeight: '20' },
+        textStyle: { textAlign: 'center', fontSize: '18px', },
         inputStyle: { width: '100%', border: 'none', fontWeight: 'bold' },
       },
     },
@@ -53,6 +61,7 @@ const SettingsMenu = () => {
       value: 'LayoutBlockParagraph',
       key: 'paragraph',
       title: {
+        key: 'paragraph',
         text: 'Block paragraph text',
         wrapperStyle: { textAlign: 'center' },
         textStyle: { fontSize: '16px', margin: '0px' },
@@ -67,9 +76,35 @@ const SettingsMenu = () => {
         key: 'image',
         text: 'https://tinyjpg.com/images/social/website.jpg',
         wrapperStyle: { textAlign: 'center' },
-        inputStyle: { border: 'none' },
+        textStyle: { border: 'none', height: '100%', width: '100%'},
       },
     },
+    {
+      label: 'Block Button',
+      value: 'LayoutBlockButton',
+      key: 'button',
+      title: {
+        key: 'button',
+        text: 'CLICK ME!',
+        wrapperStyle: { textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center' },
+        textStyle: { fontSize: '16px', margin: '0px', width: '100%', height: '100%', backgroundColor: 'green' },
+        inputStyle: { width: '100%', border: 'none' },
+      }
+    },
+    {
+      label: 'Block Anchor',
+      value: 'LayoutBlockAnchor',
+      key: 'anchor',
+      title: {
+        key: 'anchor',
+        text: 'LINK TO',
+        url: url,
+        wrapperStyle: { textAlign: 'center', width: '100%', height: '100%'},
+        textStyle: { fontSize: '16px', margin: '0px', width: '100%'},
+        inputStyle: { width: '100%', border: 'none' },
+      }
+    }
+  ];
   ];
 
   // изменение ширины блока по X
@@ -109,7 +144,7 @@ const SettingsMenu = () => {
   // - props: пропсы для содержимого и стилизации содржимого
   const setPropsToElement = (label, r, w) => {
     setType(label.key);
-    setInputValue(label.title.text);
+    setText(label.title.text);
     const id = String(r) + w;
     const prevRow = JSON.parse(JSON.stringify(layoutDate[r]));
     const idxInRow = prevRow.findIndex((el) => {
@@ -123,13 +158,13 @@ const SettingsMenu = () => {
 
   // изменение текста содержимого или url изображения
   // (при вводе в input и изменение стейта value)
-  const setTextToElement = () => {
-    if (inputValue) {
+    const setTextToElement = () => {
+    if (text) {
       const prevRow = JSON.parse(JSON.stringify(layoutDate[r]));
       const idxInRow = prevRow.findIndex((el) => {
         return String(el.i) === id;
       });
-      prevRow[idxInRow].props.text = inputValue;
+      prevRow[idxInRow].props.text = text;
       const newRow = [...prevRow];
       dispatch(setLayoutDate({ ...layoutDate, [r]: newRow }));
     }
@@ -137,7 +172,7 @@ const SettingsMenu = () => {
 
   const handleText = (e) => {
     const text = e.target.value;
-    setInputValue(text);
+    setText(text);
   };
 
   // блок ввода текста с input
@@ -145,14 +180,41 @@ const SettingsMenu = () => {
     return (
       <div className="settings-menu__content__title-props">
         <form id="section-settings-form">
+          {(type === 'anchor' || type === 'button') && urlInput()}
           <label id="section-settings-form" className="settings-menu__content__title-props__label">
             <span>text: </span>
-            <textarea value={inputValue} onChange={(e) => handleText(e)} />
+            <textarea value={text} onChange={(e) => handleText(e)} />
           </label>
         </form>
       </div>
     );
   };
+
+  const handleUrl = (e) => {
+    const text = e.target.value;
+    setUrl(`${text}`);
+  } 
+
+  const setUrlToElement = () => {
+    if (url) {
+      const prevRow = JSON.parse(JSON.stringify(layoutDate[r]));
+      const idxInRow = prevRow.findIndex((el) => {
+        return String(el.i) === id;
+      });
+      prevRow[idxInRow].props.url = url;
+      const newRow = [...prevRow];
+      dispatch(setLayoutDate({ ...layoutDate, [r]: newRow }));
+    }
+  };
+  // инпут для url
+  const urlInput = () => {
+    return (
+      <label>
+        Введите target url:
+        <input type='text' value={url} onChange={(e) => handleUrl(e)}></input>
+      </label>
+    );
+  }
 
   return (
     <div className="settings-menu">
