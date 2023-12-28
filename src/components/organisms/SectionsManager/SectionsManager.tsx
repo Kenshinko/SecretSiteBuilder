@@ -1,22 +1,23 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { handleSettingsMenu, setLayoutDate } from "../../../store/landingBuilder/sectionsManagerSlice";
 
 import "./SectionsManager.scss";
 
 import { PlusCircleOutlined, MinusOutlined } from '@ant-design/icons'
-import Constructor from "../../molecules/SectionsConstructor";
 import SettingsMenu from "../../molecules/SettingsMenu";
 import { Select } from "antd";
+import MemoizedSectionsConstructor from "../../molecules/SectionsConstructor";
+import { useAppSellector } from "@/hooks/cvTemplateHooks";
 
-const SectionsManager = () => {
+const SectionsManager: FC = () => {
 
     const dispatch = useDispatch();
     
-    const settingstMenuOpened = useSelector(state => state.sectionsManager.settingstMenuOpened); // состояние меню параметров
-    const curId = useSelector(state => state.sectionsManager.curId) // id выбранного блока
-    const layoutDate = useSelector(state => state.sectionsManager.layoutDate); 
+    const settingstMenuOpened = useAppSellector(state => state.sectionsManager.settingstMenuOpened); // состояние меню параметров
+    const curId = useAppSellector(state => state.sectionsManager.curId) // id выбранного блока
+    const layoutDate = useAppSellector(state => state.sectionsManager.layoutDate); 
     const rows = Object.keys(layoutDate).length;
 
     const [ name, setName ] = useState('');
@@ -66,12 +67,13 @@ const SectionsManager = () => {
         }))
 
         const section = {
-            name: 'SectionWrapper', // указание имени элмента-обертки (molecules)
+            name: 'ContainerDIV', // указание имени элмента-обертки (molecules)
             title: name, // имя секции из input
             type: type, // вид секции
-            source: 'molecules', // ресурс обертки
+            columns: 6,
+            source: 'atoms', // ресурс обертки
             children: elements, // массив из объектов с параметрами basic LayoutBlock elements
-            layout: { i: null, x: 0, y: 0, w: 6, h: calcSectionH() } // разметка родительского ConteinerDIV элемента
+            layout: { i: null, x: 0, y: 0, w: 6, h: calcSectionH() + 1 } // разметка родительского ConteinerDIV элемента
         };
         if (name) {
           console.log(section) // логгер добавленной секции
@@ -218,7 +220,7 @@ const SectionsManager = () => {
                     </input>
                     <span className="manager-container__workspace__inputs__intro">section max w = 6</span>
                   </div>
-                  <Constructor  rows={rows}/>
+                  <MemoizedSectionsConstructor />
                   <button 
                     className="manager-container__workspace__btn"
                     onClick={() => sectionData()}

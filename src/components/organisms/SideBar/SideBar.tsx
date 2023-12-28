@@ -81,11 +81,17 @@ const SideBar: React.FC = () => {
                 {key === 'Manage' && (
                   <>
                     <ManagerButton
-                      onClick={() => navigate('sections-creator')}
+                      onClick={() => {
+                        closePanel();
+                        navigate('sections-creator');
+                      }}
                       name="Section Creator"
                     />
                     <ManagerButton
-                      onClick={() => navigate('template-creator')}
+                      onClick={() => {
+                        closePanel();
+                        navigate('template-creator')
+                      }}
                       name="Template Creator"
                     />
                   </>
