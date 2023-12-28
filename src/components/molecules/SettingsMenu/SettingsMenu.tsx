@@ -105,7 +105,6 @@ const SettingsMenu = () => {
       }
     }
   ];
-  ];
 
   // изменение ширины блока по X
   const handleLayoutX = (e, i) => {

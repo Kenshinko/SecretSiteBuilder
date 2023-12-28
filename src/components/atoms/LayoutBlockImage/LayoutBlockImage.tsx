@@ -9,19 +9,6 @@ type LayoutBlockImageProps = {
 
 };
 
-const LayoutBlockImage: React.FC<LayoutBlockImageProps> = ({ props }) => {
-  return (
-    <div style={props.wrapperStyle}>
-      <img src={props.text} style={props.inputStyle}></img>
-    </div>
-
-  props: {
-    text: string;
-    wrapperStyle: { [key: string]: string | number };
-    textStyle: { [key: string]: string | number };
-  };
-};
-
 const LayoutBlockImage: FC<LayoutBlockImageProps> = ({ props }) => {
 
   const [ url, setUrl ] = useState<string>(props.text);
