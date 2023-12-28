@@ -1,7 +1,12 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 
 type LayoutBlockParagraphProps = {
-  props: { text: string; wrapperStyle: {}; textStyle: {}; inputStyle: {} };
+  props: {
+    text: string;
+    wrapperStyle: { [key: string]: string | number };
+    textStyle: { [key: string]: string | number };
+    inputStyle: { [key: string]: string | number };
+  };
 };
 
 const LayoutBlockParagraph: React.FC<LayoutBlockParagraphProps> = ({ props }) => {

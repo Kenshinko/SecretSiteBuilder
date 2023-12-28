@@ -1,16 +1,12 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 
 type LayoutBlockTitleProps = {
-<<<<<<< Updated upstream
-  props: { text: string; wrapperStyle: {}, textStyle: {}; inputStyle: {} };
-=======
   props: {
     text: string;
     wrapperStyle: { [key: string]: string | number };
     textStyle: { [key: string]: string | number };
     inputStyle: { [key: string]: string | number };
   };
->>>>>>> Stashed changes
 };
 
 const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
@@ -40,11 +36,7 @@ const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
         <input
           type="text"
           style={{ ...props.textStyle, ...props.inputStyle }}
-<<<<<<< Updated upstream
-          value={title}
-=======
           value={props.text}
->>>>>>> Stashed changes
           onChange={handleChange}
           onKeyDown={handleSubmit}
           autoFocus
@@ -52,11 +44,7 @@ const LayoutBlockTitle: React.FC<LayoutBlockTitleProps> = ({ props }) => {
         />
       ) : (
         <h1 style={props.textStyle} onDoubleClick={handleDoubleClick}>
-<<<<<<< Updated upstream
-          {title}
-=======
           {text}
->>>>>>> Stashed changes
         </h1>
       )}
     </div>

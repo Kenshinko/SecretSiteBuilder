@@ -1,6 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import { handleSettingsMenu, setLayoutDate, editRowDate } from '../../../store/landingBuilder/sectionsManagerSlice';
+import {
+  handleSettingsMenu,
+  setLayoutDate,
+  editRowDate,
+} from '../../../store/landingBuilder/sectionsManagerSlice';
 
 import { CloseOutlined } from '@ant-design/icons';
 import './SettingsMenu.scss';
@@ -9,24 +13,16 @@ import { Select } from 'antd';
 import { useEffect, useState } from 'react';
 
 const SettingsMenu = () => {
-
-  const id = useSelector(state => state.sectionsManager.curId);
+  const id = useSelector((state) => state.sectionsManager.curId);
 
   const [r, w] = String(id).split('');
   const row = Number(r);
   const col = Number(w);
 
-  const layoutDate = useSelector(state => state.sectionsManager.layoutDate)
+  const layoutDate = useSelector((state) => state.sectionsManager.layoutDate);
   const layoutRow = layoutDate[r];
 
-<<<<<<< Updated upstream
-  const [ type, setType ] = useState('');
-  const [ inputValue, setInputValue ] = useState('');
 
-  useEffect(() => {
-    setTextToElement();
-  }, [inputValue])
-=======
   const [type, setType] = useState('');
   const [text, setText] = useState('');
   const [ url, setUrl ] = useState('');
@@ -38,7 +34,6 @@ const SettingsMenu = () => {
   useEffect(() => {
     setUrlToElement();
   }, [url])
->>>>>>> Stashed changes
 
   const dispatch = useDispatch();
 
@@ -47,8 +42,7 @@ const SettingsMenu = () => {
     {
       value: '',
       label: '',
-      title: {                      
-      }
+      title: {},
     },
     {
       label: 'Block Title',
@@ -60,7 +54,7 @@ const SettingsMenu = () => {
         wrapperStyle: { lineHeight: '20' },
         textStyle: { textAlign: 'center', fontSize: '18px', },
         inputStyle: { width: '100%', border: 'none', fontWeight: 'bold' },
-      }
+      },
     },
     {
       label: 'Block Paragraph',
@@ -72,7 +66,7 @@ const SettingsMenu = () => {
         wrapperStyle: { textAlign: 'center' },
         textStyle: { fontSize: '16px', margin: '0px' },
         inputStyle: { width: '100%', border: 'none' },
-      }
+      },
     },
     {
       label: 'Block Image',
@@ -81,13 +75,7 @@ const SettingsMenu = () => {
       title: {
         key: 'image',
         text: 'https://tinyjpg.com/images/social/website.jpg',
-<<<<<<< Updated upstream
         wrapperStyle: { textAlign: 'center' },
-        inputStyle: {border: 'none' },
-      }
-    },
-  ]
-=======
         textStyle: { border: 'none', height: '100%', width: '100%'},
       },
     },
@@ -117,25 +105,25 @@ const SettingsMenu = () => {
       }
     }
   ];
->>>>>>> Stashed changes
+  ];
 
   // изменение ширины блока по X
   const handleLayoutX = (e, i) => {
     const value = e.target.value;
-    if (calcNewRowW(Number(value)) && typeof(Number(value)) === 'number') {
+    if (calcNewRowW(Number(value)) && typeof Number(value) === 'number') {
       const newValue = JSON.parse(JSON.stringify(layoutRow));
       newValue[i].w = Number(value);
-      dispatch(editRowDate({row, date: newValue})) 
+      dispatch(editRowDate({ row, date: newValue }));
     }
-  }
+  };
 
   // изменение ширины блока по Y
   const handleLayoutY = (e, i) => {
-      const value = e.target.value;
-      const newValue = JSON.parse(JSON.stringify(layoutRow));
-      newValue[i].h = Number(value);
-      dispatch(editRowDate({row, date: newValue})) 
-  }
+    const value = e.target.value;
+    const newValue = JSON.parse(JSON.stringify(layoutRow));
+    newValue[i].h = Number(value);
+    dispatch(editRowDate({ row, date: newValue }));
+  };
 
   // проверка при изменении ширины блока, что бы новая ширина секции была меньше 6
   const calcNewRowW = (value) => {
@@ -149,7 +137,7 @@ const SettingsMenu = () => {
       return false;
     }
     return true;
-  }
+  };
 
   // задание элементу children параметров при выборе или изменении basic элемента:
   // - name: название basic LayoutBlock элемента (molecules)
@@ -159,32 +147,28 @@ const SettingsMenu = () => {
     setText(label.title.text);
     const id = String(r) + w;
     const prevRow = JSON.parse(JSON.stringify(layoutDate[r]));
-    const idxInRow = prevRow.findIndex((el) => { return String(el.i) === id });
+    const idxInRow = prevRow.findIndex((el) => {
+      return String(el.i) === id;
+    });
     prevRow[idxInRow].name = label.value;
     prevRow[idxInRow].props = label.title;
     const newRow = [...prevRow];
-    dispatch(setLayoutDate(({...layoutDate, [r]: newRow})));
+    dispatch(setLayoutDate({ ...layoutDate, [r]: newRow }));
   };
 
   // изменение текста содержимого или url изображения
   // (при вводе в input и изменение стейта value)
-  const setTextToElement = () => {
+    const setTextToElement = () => {
     if (text) {
       const prevRow = JSON.parse(JSON.stringify(layoutDate[r]));
-<<<<<<< Updated upstream
-      const idxInRow = prevRow.findIndex((el) => { return String(el.i) === id });
-      prevRow[idxInRow].props.text = inputValue;
-=======
       const idxInRow = prevRow.findIndex((el) => {
         return String(el.i) === id;
       });
       prevRow[idxInRow].props.text = text;
->>>>>>> Stashed changes
       const newRow = [...prevRow];
-      dispatch(setLayoutDate(({...layoutDate, [r]: newRow})));
-    };
+      dispatch(setLayoutDate({ ...layoutDate, [r]: newRow }));
+    }
   };
-
 
   const handleText = (e) => {
     const text = e.target.value;
@@ -194,15 +178,6 @@ const SettingsMenu = () => {
   // блок ввода текста с input
   const textProps = () => {
     return (
-<<<<<<< Updated upstream
-      <div className='settings-menu__content__title-props'>
-          <form id='section-settings-form'>
-            <label id='section-settings-form' className='settings-menu__content__title-props__label'>
-              <span>text: </span>
-              <textarea value={inputValue} onChange={(e) => handleText(e)} />
-            </label>
-          </form>
-=======
       <div className="settings-menu__content__title-props">
         <form id="section-settings-form">
           {(type === 'anchor' || type === 'button') && urlInput()}
@@ -211,7 +186,6 @@ const SettingsMenu = () => {
             <textarea value={text} onChange={(e) => handleText(e)} />
           </label>
         </form>
->>>>>>> Stashed changes
       </div>
     );
   };
@@ -243,47 +217,44 @@ const SettingsMenu = () => {
   }
 
   return (
-      <div className='settings-menu'>
-        <div className='settings-menu__title'>
-            {`| row:${r} | col:${w} |`}
-            <CloseOutlined 
-                style={{fontSize: '20px', cursor: 'pointer'}}
-                onClick={() => dispatch(handleSettingsMenu())}/>
-        </div>
-          <form 
-            className='constructor-container__row__el__section__inputs'
-          >
-            <label>
-            w:
-                <input 
-                    className='constructor-container__row__el__section__input'
-                    value={`${layoutRow[col - 1 ].w}`}
-                    onChange={(e) => handleLayoutX(e, col - 1)}
-                >    
-                </input>
-            </label>
-            <label>
-            h:
-                <input 
-                    className='constructor-container__row__el__section__input' 
-                    value={`${layoutRow[col - 1].h}`}
-                    onChange={(e) => handleLayoutY(e, col - 1)}
-                >    
-                </input>
-            </label>
-        </form>
-        <div className='settings-menu__content'>
-            Choose element:
-            <Select
-                labelInValue
-                defaultValue={{ value: '', label: '' }}
-                style={{ width: 160 }}
-                onChange={(label) => setPropsToElement(label, r, w)}
-                options={selectOptions}
-            />
-            {type && textProps()}
-        </div>
+    <div className="settings-menu">
+      <div className="settings-menu__title">
+        {`| row:${r} | col:${w} |`}
+        <CloseOutlined
+          style={{ fontSize: '20px', cursor: 'pointer' }}
+          onClick={() => dispatch(handleSettingsMenu())}
+        />
       </div>
+      <form className="constructor-container__row__el__section__inputs">
+        <label>
+          w:
+          <input
+            className="constructor-container__row__el__section__input"
+            value={`${layoutRow[col - 1].w}`}
+            onChange={(e) => handleLayoutX(e, col - 1)}
+          ></input>
+        </label>
+        <label>
+          h:
+          <input
+            className="constructor-container__row__el__section__input"
+            value={`${layoutRow[col - 1].h}`}
+            onChange={(e) => handleLayoutY(e, col - 1)}
+          ></input>
+        </label>
+      </form>
+      <div className="settings-menu__content">
+        Choose element:
+        <Select
+          labelInValue
+          defaultValue={{ value: '', label: '' }}
+          style={{ width: 160 }}
+          onChange={(label) => setPropsToElement(label, r, w)}
+          options={selectOptions}
+        />
+        {type && textProps()}
+      </div>
+    </div>
   );
 };
 

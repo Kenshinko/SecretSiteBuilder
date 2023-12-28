@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Tab, Tabs } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
@@ -9,9 +9,10 @@ import { importFiles } from '@/utils';
 import TabPanel from '@molecules/TabPanel';
 import NestedList from '@molecules/NestedList';
 
+import ManagerButton from '@/components/atoms/ManagerButton';
+import { useNavigate } from 'react-router-dom';
+
 import classes from './SideBar.module.scss';
-import SectionsManagerButton from '@/components/atoms/SectionsManagerButton';
-import { Link, useNavigate } from 'react-router-dom';
 
 const SideBar: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(0);
@@ -78,11 +79,6 @@ const SideBar: React.FC = () => {
                 closePanel={closePanel}
               >
                 {key === 'Manage' && (
-<<<<<<< Updated upstream
-                  <Link to="/sections-creator">
-                    <SectionsManagerButton onClick={() => navigate('sections-creator')}/>
-                  </Link>
-=======
                   <>
                     <ManagerButton
                       onClick={() => {
@@ -99,8 +95,8 @@ const SideBar: React.FC = () => {
                       name="Template Creator"
                     />
                   </>
->>>>>>> Stashed changes
                 )}
+
                 {items.map((item) => {
                   return (
                     <NestedList key={item.name} name={item.name} items={item.list}></NestedList>

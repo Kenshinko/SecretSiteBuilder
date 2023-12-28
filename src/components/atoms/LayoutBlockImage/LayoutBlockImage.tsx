@@ -1,20 +1,20 @@
 import { useState, FC } from "react";
 
 type LayoutBlockImageProps = {
-<<<<<<< Updated upstream
-  props: { text: string; wrapperStyle: {}; inputStyle: {} };
+  props: {
+    text: string;
+    wrapperStyle: { [key: string]: string | number };
+    inputStyle: { [key: string]: string | number };
+  };
+
 };
 
 const LayoutBlockImage: React.FC<LayoutBlockImageProps> = ({ props }) => {
-
   return (
     <div style={props.wrapperStyle}>
-      <img 
-        src={props.text}
-        style={props.inputStyle}>
-      </img>
+      <img src={props.text} style={props.inputStyle}></img>
     </div>
-=======
+
   props: {
     text: string;
     wrapperStyle: { [key: string]: string | number };
@@ -80,7 +80,6 @@ const LayoutBlockImage: FC<LayoutBlockImageProps> = ({ props }) => {
       .{ isEditing && inputPannel() }
       </div>
     </>
->>>>>>> Stashed changes
   );
 };
 

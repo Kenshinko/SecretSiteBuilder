@@ -1,6 +1,7 @@
+import { T_BlockElement } from '@/types/landingBuilder';
 import LayoutBlockParagraph from './LayoutBlockParagraph';
 
-export const props = {
+export const props: T_BlockElement = {
   name: 'LayoutBlockParagraph',
   type: 'Simple Elements',
   source: 'atoms',
@@ -10,7 +11,7 @@ export const props = {
     textStyle: { fontSize: 16, margin: 0 },
     inputStyle: { width: '100%', border: 'none' },
   },
-  layout: { i: null, x: 0, y: 0, w: 1, h: 4 },
+  layout: { i: '', x: 0, y: 0, w: 1, h: 4 },
 };
 
 export default LayoutBlockParagraph;
